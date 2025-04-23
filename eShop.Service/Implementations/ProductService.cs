@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using eShop.Domain.DomainModels;
+using eShop.Domain.DTO;
 using eShop.Repository.Interfaces;
 using eShop.Service.Interfaces;
 
@@ -108,18 +109,18 @@ namespace eShop.Service.Implementations
             return _productRepository.Update(product);
         }
 
-        // public AddToCartDTO GetSelectedShoppingCartProduct(Guid id)
-        // {
-        //     var selectedProduct = GetById(id);
-        //
-        //     var addProductToCartModel = new AddToCartDTO
-        //     {
-        //         SelectedProductId = selectedProduct.Id,
-        //         SelectedProductName = selectedProduct.ProductName,
-        //         Quantity = 1
-        //     };
-        //
-        //     return addProductToCartModel;
-        // }
+        public AddToShoppingCartDTO GetSelectedShoppingCartProduct(Guid id)
+        {
+            var selectedProduct = GetById(id);
+
+            var addProductToCartModel = new AddToShoppingCartDTO
+            {
+                ProductId = selectedProduct.Id,
+                ProductName = selectedProduct.ProductName,
+                Quantity = 1
+            };
+
+            return addProductToCartModel;
+        }
     }
 }

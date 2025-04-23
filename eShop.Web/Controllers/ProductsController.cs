@@ -11,6 +11,7 @@ using eShop.Web.Data;
 using eShop.Service.Implementations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using eShop.Domain.DTO;
 
 namespace eShop.Web.Controllers
 {
@@ -129,28 +130,18 @@ namespace eShop.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public IActionResult AddProductToCard(Guid id)
+        public IActionResult AddProductToCart(Guid id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return NotFound();
-            }
-            _context.AddProductToShoppingCart(id, Guid.Parse(userId), 1);
-            return RedirectToAction(nameof(Index));
-            // AddToCartDTO model = _productService.GetSelectedShoppingCartProduct(id);
-            // return View(model);
+            AddToShoppingCartDTO cartDTO = _context.GetSelectedShoppingCartProduct(id);
+            return View(cartDTO);
         }
 
-        // [HttpPost]
-        // public IActionResult AddProductToCard(AddToCartDTO model)
-        // {
-        //     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //     _productService.AddProductToSoppingCart(model.SelectedProductId, Guid.Parse(userId), model.Quantity);
-        //     return RedirectToAction(nameof(Index));
-        // }
+        [HttpPost]
+        public IActionResult AddProductToCart(AddToShoppingCartDTO model)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _context.AddProductToShoppingCart(model.ProductId, Guid.Parse(userId), model.Quantity);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
