@@ -10,6 +10,7 @@ using eShop.Service.Interfaces;
 using eShop.Web.Data;
 using eShop.Service.Implementations;
 using System.Security.Claims;
+using eShop.Domain.DTO;
 
 namespace eShop.Web.Controllers
 {
@@ -26,7 +27,7 @@ namespace eShop.Web.Controllers
         public ActionResult Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userShoppingCart = _context.GetByUserIdWithIncludedPrducts(Guid.Parse(userId));
+            ShoppingCartDTO userShoppingCart = _context.GetByUserIdWithIncludedPrducts(Guid.Parse(userId));
             return View(userShoppingCart);
         }
 
@@ -36,6 +37,12 @@ namespace eShop.Web.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             _context.DeleteProductFromShoppingCart(Guid.Parse(userId));
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult OrderNow()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _context.OrderProducts(userId);
             return RedirectToAction(nameof(Index));
         }
 

@@ -7,11 +7,11 @@ using eShop.Domain.Identity;
 
 namespace eShop.Domain.DomainModels
 {
-    public class ShoppingCart : BaseEntity
+    public class Order : BaseEntity
     {
         public string? OwnerId { get; set; }
         public eShopApplicationUser? Owner { get; set; }
-        public virtual ICollection<ProductInShoppingCart>? ProductsInShoppingCarts { get; set; }
 
+        public ICollection<ProductInOrder>? ProductInOrders { get; set; }
     }
 }

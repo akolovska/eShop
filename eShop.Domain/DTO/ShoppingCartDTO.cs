@@ -9,7 +9,7 @@ namespace eShop.Domain.DTO
 {
     public class ShoppingCartDTO
     {
-        public int Sum { get; set; }
+        public double Sum { get; set; }
         public List<ProductInShoppingCart>? ProductsInShoppingCart { get; set; }
     }
 }
